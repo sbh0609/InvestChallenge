@@ -6,7 +6,7 @@ import java.util.*;
 
 import utility.userVO;
 
-public class ConnectDb {
+public class ConnectDB {
 	
 	Connection conn = null ;
 	PreparedStatement pstmt = null;
