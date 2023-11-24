@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%	request.setCharacterEncoding("UTF-8"); %>
-<jsp:useBean id="udao" class="utility.ConnectDb"/>
+<jsp:useBean id="udao" class="utility.ConnectDB"/>
 <jsp:useBean id="user" class="utility.userVO"/>
 <%	String id = request.getParameter("id");
 	String pw = request.getParameter("pw");
