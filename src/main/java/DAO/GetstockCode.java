@@ -1,14 +1,15 @@
-package models;
+package DAO;
 import utility.ConnectDB;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import service.GetapiData;
 
-
-public class DbControl {
+public class GetstockCode {
 	// 주식 이름에 해당하는 단축 코드를 검색하는 메소드
 	
-    public String getStockCodeByName(String stockName) {
+    public String getStockCode(String stockName) {
         ConnectDB db = new ConnectDB();
         db.connect();
         Connection conn = db.getConn();
@@ -34,13 +35,12 @@ public class DbControl {
 
         return stockCode;
     }
-    
 //
 //	public static void main(String[] args) {
 //		// TODO Auto-generated method stub
 //		DbControl getcode = new DbControl();
 //		String stockname = "삼성전자";
-//		String result = getcode.getStockCodeByName(stockname);
+//		String result = getcode.getStockCode(stockname);
 //		System.out.println(result);
 //	}
 
