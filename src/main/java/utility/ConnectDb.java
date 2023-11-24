@@ -2,12 +2,16 @@ package utility;
 
 
 import java.sql.*;
-import java.util.*;
 
 public class ConnectDB {
 	
 	Connection conn = null ;
 	PreparedStatement pstmt = null;
+	
+	//환경변수 설정
+	String dbusername = System.getenv("DB_NAME");
+	String dbpassword = System.getenv("DB_PASSWORD");
+	
 	
 	String jdbc_driver = "com.mysql.cj.jdbc.Driver";
 	String jdbc_url = "jdbc:mysql://localhost/jspdb?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC";
@@ -15,7 +19,7 @@ public class ConnectDB {
 	public void connect() {
 		try {
 			Class.forName(jdbc_driver);
-			conn = DriverManager.getConnection(jdbc_url,"jspbook","2019156018");
+			conn = DriverManager.getConnection(jdbc_url,dbusername,dbpassword);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
