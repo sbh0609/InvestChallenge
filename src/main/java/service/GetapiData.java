@@ -1,13 +1,20 @@
-package utility;
+package service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import utility.ConnectKIS;
+
 import java.text.SimpleDateFormat;
-import java.io.FileWriter;
-import java.io.IOException;
+
 
 public class GetapiData {
 	private String apiKey = System.getenv("KISAPP_KEY");
@@ -17,13 +24,13 @@ public class GetapiData {
     //입력 창에서 받아온 데이터로 변경
     private static final String STOCK_CODE = "000660";
      //주식 현재가를 조회하는 메소드
-    public String LiveStockPrice() {
+    public String LiveStockPrice(String stock_code) {
     	String token = new ConnectKIS().readTokenFromFile();
-        StringBuilder response1 = new StringBuilder();
-
+        StringBuilder response = new StringBuilder();
+        String nowprice = null;
         try {
             String path = "uapi/domestic-stock/v1/quotations/inquire-price";
-            URL url = new URL(URL_BASE + "/" + path + "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + STOCK_CODE);
+            URL url = new URL(URL_BASE + "/" + path + "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + stock_code);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
             conn.setRequestMethod("GET");
@@ -36,14 +43,16 @@ public class GetapiData {
             int responseCode = conn.getResponseCode();
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                String inputLine;
+                String inputLine;	
 
                 while ((inputLine = in.readLine()) != null) {
-                    response1.append(inputLine);
+                    response.append(inputLine);
                 }
                 in.close();
+//                System.out.println(response.toString());
+                JSONObject jsonResponse = new JSONObject(response.toString());
+                nowprice = jsonResponse.getJSONObject("output").getString("stck_prpr");
                 
-                System.out.println(response1.toString());
             } else if (responseCode == 401) { // 토큰 만료 시 재발급
                 new ConnectKIS().issueToken();
             } else {
@@ -51,12 +60,14 @@ public class GetapiData {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
+            return "Error: Exception occurred";
         }
-        return response1.toString();
+//        return response.toString();
+        System.out.println(nowprice);
+        return nowprice;
     }
     
-    public String DailyChartprice() {
+    public String[][] DailyChartprice(String stock_code) {
     	 String token = new ConnectKIS().readTokenFromFile();
     	 StringBuilder response = new StringBuilder();
 //         현재 날짜 yyyymmdd
@@ -64,10 +75,11 @@ public class GetapiData {
          Calendar c1 = Calendar.getInstance();
          String strToday = sdf.format(c1.getTime());
          System.out.println(strToday);
-         
+         String[][] revchartData = null;
+         String[][] ChartData = null;
          try {
         	 String path = "uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
-        	 URL url = new URL(URL_BASE + "/" + path + "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + STOCK_CODE + "&fid_input_date_1=20231111&fid_input_date_2="+strToday+"&fid_org_adj_prc=0&fid_period_div_code=D");
+        	 URL url = new URL(URL_BASE + "/" + path + "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + stock_code + "&fid_input_date_1=20231111&fid_input_date_2="+strToday+"&fid_org_adj_prc=0&fid_period_div_code=D");
         	 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
              conn.setRequestMethod("GET");
@@ -88,6 +100,34 @@ public class GetapiData {
                  in.close();
                  
                  System.out.println(response.toString());
+                 JSONObject jsonResponse = new JSONObject(response.toString());
+                 System.out.println(jsonResponse);
+                 JSONArray output2Array = jsonResponse.getJSONArray("output2");
+                 System.out.println(output2Array);
+                 revchartData = new String[output2Array.length()][2];
+                 
+                 for (int i = 0; i < output2Array.length(); i++) {
+                     JSONObject dayData = output2Array.getJSONObject(i);
+                     revchartData[i][0] = dayData.getString("stck_bsop_date"); // 첫 번째 열에 영업일자 저장
+                     revchartData[i][1] = dayData.getString("stck_clpr"); // 두 번째 열에 종가 저장
+                 }
+                 
+                 List<String[]> revchartDataList = Arrays.asList(revchartData);
+                 Collections.reverse(revchartDataList);
+                 ChartData = revchartDataList.toArray(new String[0][]);
+                //전체 데이터 2차원으로 저장 
+//                 for (int i = 0; i < output2Array.length(); i++) {
+//                     JSONObject dayData = output2Array.getJSONObject(i);
+//                     Iterator<String> keys = dayData.keys();
+//                     ArrayList<String> dayValues = new ArrayList<>();
+//
+//                     while(keys.hasNext()) {
+//                         String key = keys.next();
+//                         dayValues.add(dayData.getString(key));
+//                     }
+//
+//                     chartData[i] = dayValues.toArray(new String[0]);
+//                 }
              } else if (responseCode == 401) { // 토큰 만료 시 재발급
                  new ConnectKIS().issueToken();
              } else {
@@ -95,12 +135,12 @@ public class GetapiData {
              }
          } catch (Exception e) {
              e.printStackTrace();
-             return null;
          }
-         return response.toString();
+//         return response.toString();
+         return ChartData;
              
     }
-    
+    // json 파일로 저장해놓는 함수
 //    public void saveJsonToFile(String jsonData, String filePath) {
 //        try (FileWriter file = new FileWriter(filePath)) {
 //            file.write(jsonData);
@@ -114,16 +154,19 @@ public class GetapiData {
 //파일 별 실생 원할 대 주석 풀기
 //    public static void main(String[] args) {
 //        GetapiData apiData = new GetapiData();
-//        String priceData = apiData.LiveStockPrice();
+//        String priceData = apiData.LiveStockPrice("000660");
 //       
 //        if (priceData != null) {
 //            System.out.println("정상 실행!");
 //        } else {
 //            System.out.println("Failed to retrieve stock price data.");
 //        }
-//        String dailyData = apiData.DailyChartprice();
+//        String[][] dailyData = apiData.DailyChartprice("000660");
 //        if (dailyData != null) {
 //            System.out.println("정상 실행!");
+//            for (String[] row : dailyData) {
+//        	    System.out.println(Arrays.toString(row));
+//        	}
 //            apiData.saveJsonToFile(dailyData, "daily.json");
 //        } else {
 //            System.out.println("Failed to retrieve daily data.");
