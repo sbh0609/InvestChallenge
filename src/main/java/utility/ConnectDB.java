@@ -14,7 +14,9 @@ public class ConnectDB {
 	
 	
 	String jdbc_driver = "com.mysql.cj.jdbc.Driver";
+
 	String jdbc_url = "jdbc:mysql://localhost/investchallenge?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC";
+
 	
 	public void connect() {
 		try {
@@ -27,7 +29,7 @@ public class ConnectDB {
 		
 	}
 	
-	public void disconnect(Connection conn) {
+  public void disconnect(Connection conn) {
 		if (pstmt != null) {
             try {
                 pstmt.close();
@@ -42,7 +44,8 @@ public class ConnectDB {
                 e.printStackTrace();
             }
         }
-    }
+  }
+
 
 //	public static void main(String[] args) {
 //		ConnectDB db = new ConnectDB();

@@ -11,6 +11,8 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+	<meta charset="UTF-8">
+	<title> Main </title>
 </head>
 <body>
 <div align="center">
@@ -31,6 +33,7 @@
 <input type="button" value="로그인" onclick="location.href='login.jsp'">
 </div>
 <form method="post" action="searchResult.jsp">
+
 		<div class="search">
 			<input type="text" class="form-control puu-right" placeholder="주식을 검색하세요." name="searchWord" />
 		</div>
