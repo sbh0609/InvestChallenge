@@ -1,5 +1,5 @@
 package DAO;
-import utility.ConnectDb;
+import utility.ConnectDB;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,7 +10,7 @@ public class GetstockCode {
 	// 주식 이름에 해당하는 단축 코드를 검색하는 메소드
 	
     public String getStockCode(String stockName) {
-        ConnectDb db = new ConnectDb();
+        ConnectDB db = new ConnectDB();
         db.connect();
         Connection conn = db.getConn();
         String stockCode =  null;
