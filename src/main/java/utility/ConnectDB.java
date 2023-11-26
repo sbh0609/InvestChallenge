@@ -14,12 +14,13 @@ public class ConnectDB {
 	
 	
 	String jdbc_driver = "com.mysql.cj.jdbc.Driver";
-	String jdbc_url = "jdbc:mysql://localhost/jspdb?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC";
+	String jdbc_url = "jdbc:mysql://localhost/investchallenge?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC";
 	
 	public void connect() {
 		try {
 			Class.forName(jdbc_driver);
-			setConn(DriverManager.getConnection(jdbc_url,dbusername,dbpassword));
+			setConn(DriverManager.getConnection(jdbc_url, dbusername, dbpassword));
+
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -27,6 +28,13 @@ public class ConnectDB {
 	}
 	
 	public void disconnect(Connection conn) {
+		if (pstmt != null) {
+            try {
+                pstmt.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
         if (conn != null) {
             try {
                 conn.close();
@@ -35,6 +43,7 @@ public class ConnectDB {
             }
         }
     }
+
 //	public static void main(String[] args) {
 //		ConnectDB db = new ConnectDB();
 //        db.connect();
