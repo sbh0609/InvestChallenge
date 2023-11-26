@@ -3,23 +3,8 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%	request.setCharacterEncoding("UTF-8"); %>
-<jsp:useBean id="udao" class="utility.ConnectDB"/>
+<jsp:useBean id="dao" class="DAO.LoginDAO"/>
 <jsp:useBean id="user" class="utility.userVO"/>
-<%	String id = request.getParameter("id");
-	String pw = request.getParameter("pw");
-	user = udao.login(id, pw);
-	
-	if (user != null) {
-		session.setAttribute("user_id", user.getId());
-		session.setAttribute("user_name", user.getUsername());
-		
-		response.sendRedirect("main.jsp");
-	}
-	
-	else {
-		response.sendRedirect("login.jsp");
-	}
-%>
 <%--
 <%
 	Connection conn = null;
@@ -72,6 +57,21 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<%	
+	String id = request.getParameter("id");
+	String pw = request.getParameter("pw");
+	user = dao.login(id, pw);
+	
+	if (user != null) {
+		session.setAttribute("user_id", user.getId());
+		session.setAttribute("user_name", user.getUsername());
+		
+		response.sendRedirect("main.jsp");
+	}
+	
+	else {
+		response.sendRedirect("login.jsp");
+	}
+%>
 </body>
 </html>

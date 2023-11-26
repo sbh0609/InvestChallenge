@@ -3,7 +3,7 @@
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <%	request.setCharacterEncoding("UTF-8"); %>
-<jsp:useBean id="udao" class="utility.ConnectDB"/>
+<jsp:useBean id="dao" class="DAO.LoginDAO"/>
 <jsp:useBean id="user" class="utility.userVO"/>
 <%	String id = request.getParameter("id");
 	String pw = request.getParameter("pw");
@@ -11,7 +11,7 @@
 	user.setId(id);
 	user.setPw(pw);
 	user.setUsername(username);
-	int result = udao.add(user);
+	int result = dao.add(user);
 	if (result == 1) {
 		response.sendRedirect("login.jsp");
 	}

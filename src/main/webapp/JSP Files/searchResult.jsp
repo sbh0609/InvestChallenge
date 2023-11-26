@@ -8,6 +8,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<jsp:useBean id="gsc" class="DAO.GetstockCode"/>
 <%
 		request.setCharacterEncoding("UTF-8");
 		String searchWord = request.getParameter("searchWord");
@@ -19,6 +20,11 @@
 
 	
 	<h2>Search Results for "<%= searchWord %>"</h2>
+	<%
+	String code = gsc.getStockCode(searchWord);
+	%>
+	<%=code %>
+<%--
 	<%
 	Connection conn = null;
 	PreparedStatement pstmt = null;
@@ -57,6 +63,7 @@
 		if (rs != null) rs.close();
 	}
 	%>
+--%>
     <ul>
     
     </ul> 
