@@ -3,6 +3,8 @@ package utility;
 
 import java.sql.*;
 
+import org.apache.jasper.tagplugins.jstl.core.Out;
+
 import utility.userVO;
 
 public class ConnectDB {
@@ -32,7 +34,7 @@ public class ConnectDB {
 	public void disconnect() {
 		if (pstmt != null) {
             try {
-                conn.close();
+                pstmt.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
