@@ -27,7 +27,7 @@ public class ConnectDB {
 		
 	}
 	
-	public void disconnect() {
+	public void disconnect(Connection conn) {
 		if (pstmt != null) {
             try {
                 pstmt.close();
@@ -59,7 +59,7 @@ public class ConnectDB {
 			e.printStackTrace();
 		}
 		finally {
-			disconnect();
+			disconnect(conn);
 		}
 		return result;
 	}
@@ -85,7 +85,7 @@ public class ConnectDB {
 			e.printStackTrace();
 		}
 		finally {
-			disconnect();
+			disconnect(conn);
 		}
 		return user;
 	}
