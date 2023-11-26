@@ -4,7 +4,7 @@ import utility.ConnectDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import service.GetapiData;
+
 
 public class GetstockCode {
 	// 주식 이름에 해당하는 단축 코드를 검색하는 메소드
