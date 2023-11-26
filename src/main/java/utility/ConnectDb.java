@@ -3,7 +3,7 @@ package utility;
 
 import java.sql.*;
 
-public class ConnectDB {
+public class ConnectDb {
 	
 	private Connection conn = null;
 	PreparedStatement pstmt = null;
