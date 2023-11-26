@@ -4,17 +4,17 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>로그인</title>
+<title>회원가입</title>
 </head>
 <body>
 <div align="center">
-<h2>로그인</h2>
+<h2>회원가입</h2>
 <hr>
-<form action="loginProcess.jsp" method="post">
+<form action="registerProcess.jsp" method="post">
 아이디 : <input type="text" name="id"><br>
 비밀번호 : <input type="password" name="pw"><br>
-<input type="submit" value="로그인">
-<input type="button" value="회원가입" onclick="location.href='register.jsp'">
+이름 : <input type="text" name="username"><br>
+<input type="submit" value="가입">
 </form>
 </div>
 </body>
