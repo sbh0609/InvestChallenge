@@ -7,7 +7,7 @@ import org.apache.jasper.tagplugins.jstl.core.Out;
 
 import utility.userVO;
 
-public class ConnectDB {
+public class ConnectDb {
 	
 	Connection conn = null ;
 	PreparedStatement pstmt = null;
