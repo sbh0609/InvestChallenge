@@ -1,3 +1,4 @@
+<%@ page import="java.sql.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -9,8 +10,9 @@
 </head>
 	
 <body>
-	<h1> Name </h1>
-	<%
+
+<jsp:useBean id="gsc" class="DAO.GetstockCode"/>
+<%
 		request.setCharacterEncoding("UTF-8");
 		String searchWord = request.getParameter("searchWord");
 	
@@ -18,16 +20,13 @@
 		// db db = new db();
 		//List<String> searchResults = db.searchInDatabase(searchWord);
 	%>
+
 	
 	<h2>Search Results for "<%= searchWord %>"</h2>
     <ul>
     
     </ul> 
-    
-
-
-    
-    
+     
     //데이터가지고 차트 생성하는 부분인데
     //js파일 따로 만들어서 불러오려고하는데
     //js파일은 어디폴더에 넣어야되는지 모르겟음
@@ -88,7 +87,55 @@
                 }
             });
         });
-	</script>
+  </script>
+	<%
+	String code = gsc.getStockCode(searchWord);
+	%>
+	<%=code %>
+<%--
+	<%
+	Connection conn = null;
+	PreparedStatement pstmt = null;
+	ResultSet rs = null;
+	
+	String jdbc_driver = "com.mysql.cj.jdbc.Driver";
+	String jdbc_url = "jdbc:mysql://localhost/investchallenge?allowPublicKeyRetrieval=true&useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC";
+	
+	try {
+		Class.forName(jdbc_driver);
+		conn = DriverManager.getConnection(jdbc_url, "root", "passwd");
+		String sql = "select * from stocklist where `한글 종목약명` like ?";
+		pstmt = conn.prepareStatement(sql);
+		pstmt.setString(1, "%"+searchWord+"%");
+		
+		rs = pstmt.executeQuery();
+		
+		while (rs.next()) {
+			String code = rs.getString("단축코드");
+			String name = rs.getString("한글 종목약명");
+			%>
+			<ul>
+			<%=code %> <%=name %>
+			</ul>
+			<%
+		}
+	}
+	
+	catch(Exception e) {
+		e.printStackTrace();
+	}
+	
+	finally {
+		if (conn != null) conn.close();
+		if (pstmt != null) pstmt.close();
+		if (rs != null) rs.close();
+	}
+	%>
+--%>
+    <ul>
+    
+    </ul> 
+
 </body>
 </html>
 </html>
