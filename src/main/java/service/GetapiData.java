@@ -53,7 +53,7 @@ public class GetapiData {
                 JSONObject jsonResponse = new JSONObject(response.toString());
                 nowprice = jsonResponse.getJSONObject("output").getString("stck_prpr");
                 
-            } else if (responseCode == 401) { // 토큰 만료 시 재발급
+            } else if (responseCode == 500) { // 토큰 만료 시 재발급
                 new ConnectKIS().issueToken();
             } else {
                 System.out.println("Error Code: " + responseCode);
@@ -128,7 +128,7 @@ public class GetapiData {
 //
 //                     chartData[i] = dayValues.toArray(new String[0]);
 //                 }
-             } else if (responseCode == 401) { // 토큰 만료 시 재발급
+             } else if (responseCode == 500) { // 토큰 만료 시 재발급
                  new ConnectKIS().issueToken();
              } else {
                  System.out.println("Error Code: " + responseCode);
@@ -140,7 +140,8 @@ public class GetapiData {
          return ChartData;
              
     }
-    // json 파일로 저장해놓는 함수
+    
+// json 파일로 저장해놓는 함수
 //    public void saveJsonToFile(String jsonData, String filePath) {
 //        try (FileWriter file = new FileWriter(filePath)) {
 //            file.write(jsonData);
@@ -148,8 +149,7 @@ public class GetapiData {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-//    }
-         
+//    }         
     	
 //파일 별 실생 원할 대 주석 풀기
 //    public static void main(String[] args) {
@@ -167,7 +167,6 @@ public class GetapiData {
 //            for (String[] row : dailyData) {
 //        	    System.out.println(Arrays.toString(row));
 //        	}
-//            apiData.saveJsonToFile(dailyData, "daily.json");
 //        } else {
 //            System.out.println("Failed to retrieve daily data.");
 //        }

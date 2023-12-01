@@ -10,8 +10,7 @@ public class ConnectKIS {
     private String apiSecret = System.getenv("KISSECRET_KEY");
     private String baseUrl = "https://openapi.koreainvestment.com:9443";
 
-    
-
+   
     public void issueToken() {
         try {
         	// api 토큰 발급을 위해 URL 객체 생성
@@ -68,8 +67,15 @@ public class ConnectKIS {
         try (BufferedReader reader = new BufferedReader(new FileReader("token.dat"))) {
             return reader.readLine(); // 첫 번째 줄에 토큰이 저장되어 있다고 가정
         } catch (IOException e) {
-            e.printStackTrace();
-            return null; // 파일 읽기 실패 시 null 반환
+        	// 파일을 찾을 수 없을 때 issueToken 메소드를 호출하여 토큰을 재발급
+            issueToken();
+            // 재발급 후 다시 파일을 읽어서 반환
+            try (BufferedReader reader = new BufferedReader(new FileReader("token.dat"))) {
+                return reader.readLine();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                return null; // 재시도 후에도 실패하면 null 반환
+            }
         }
     }
   //파일 별 실생 원할 대 주석 풀기
