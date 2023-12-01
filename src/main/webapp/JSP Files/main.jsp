@@ -9,39 +9,61 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
 	<meta charset="UTF-8">
-	<title> Main </title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Invest Challenge</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<style>
+	    body {
+	        font-family: 'Inter', sans-serif;
+	    }
+	</style>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body>
-<div align="center">
-<h2>Invest Challenge</h2>
-<hr>
-<%	if (id != null) {
-	%>
-	<%=id %>(<%=name %>)님 환영합니다.
-<%}
-	else {
-	%>
-	비로그인 상태입니다.
-<%}
-%>
-<br>
-<%=id %>(<%=name %>)
-<br><br>
-<input type="button" value="로그인" onclick="location.href='login.jsp'">
-</div>
-<form method="post" action="searchResult.jsp">
+<body class="bg-white text-gray-800">
+    <div class="container mx-auto p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <a href="http://localhost:8080/investChallenge/JSP%20Files/main.jsp">
+            	<h1 class="text-3xl font-bold">Invest Challenge</h1>
+            </a>
+            <div class="flex space-x-4">
+            	<form method="post" action="searchResult.jsp">
+					<div class="search">
+						<input class="px-4 py-2 border rounded" type="text" class="form-control puu-right" placeholder="주식을 검색하세요." name="searchWord" />
+					</div>
+				</form>
+                <%	if (id != null) {
+					%>
+					<div class="px-4 py-2 rounded"><%=id %>(<%=name %>)님 환영합니다.</div>
+					<input class="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-300" type="button" value="로그아웃" onclick="location.href='logoutProcess.jsp'">
+				<%}
+					else {
+					%>
+					<input class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" type="button" value="로그인" onclick="location.href='login.jsp'">
+				<%}
+				%>
+            </div>
+        </div>
 
-		<div class="search">
-			<input type="text" class="form-control puu-right" placeholder="주식을 검색하세요." name="searchWord" />
-		</div>
-	
-		<button class="btn btn-primary" type="submit">
-			<span class="glyphicon glyphicon-search"></span>
-		</button>
-	
-	</form>
+        <!-- Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Chart Section -->
+            <div>
+                <h2 class="text-xl font-semibold mb-2">KOSPI</h2>
+                <img src="https://via.placeholder.com/900x300?text=KOSPI+Chart" alt="KOSPI Chart" class="mb-4">
+                <h2 class="text-xl font-semibold mb-2">KOSDAQ</h2>
+                <img src="https://via.placeholder.com/900x300?text=KOSDAQ+Chart" alt="KOSDAQ Chart">
+            </div>
+
+            <!-- Action Section -->
+            <div class="flex flex-col items-center justify-center">
+                <h2 class="text-3xl font-bold mb-6">Invest Challenge</h2>
+                <button class="w-1/4 mb-4 px-6 py-3 bg-gray-200 rounded shadow hover:bg-gray-300">내 자산 확인하기</button>
+                <button class="w-1/4 px-6 py-3 bg-blue-500 text-white rounded shadow hover:bg-blue-600">주식 거래</button>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
