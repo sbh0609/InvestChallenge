@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="utility.ConnectDB" %>
+<%@ page import="utility.ConnectDB" %>
 <%
 	String id = (String)session.getAttribute("user_id");
 	String name = (String)session.getAttribute("user_name");
@@ -21,6 +21,12 @@
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body class="bg-white text-gray-800">
+<jsp:useBean id="connectKIS" class="utility.ConnectKIS"/>
+<%
+    if (connectKIS.readTokenFromFile() == null) {
+        connectKIS.issueToken();
+    }
+%>
     <div class="container mx-auto p-4">
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
