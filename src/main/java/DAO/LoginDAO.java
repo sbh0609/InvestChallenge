@@ -8,9 +8,9 @@ public class LoginDAO {
 	
 	public int add(userVO user) {
 		// 아이디, 비밀번호, 유저이름이 null이거나 빈 문자열인 경우
-	    if (user.getId() == null || user.getId().isEmpty() ||
-	        user.getPw() == null || user.getPw().isEmpty() ||
-	        user.getUsername() == null || user.getUsername().isEmpty()) {
+	    if (user.getUserId() == null || user.getUserId().isEmpty() ||
+	        user.getUserPassword() == null || user.getUserPassword().isEmpty() ||
+	        user.getUserName() == null || user.getUserName().isEmpty()) {
 	        return -2;
 	    }
 	    
