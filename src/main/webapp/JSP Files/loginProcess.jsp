@@ -17,8 +17,8 @@
 	user = dao.login(id, pw);
 	
 	if (user != null) {
-		session.setAttribute("user_id", user.getId());
-		session.setAttribute("user_name", user.getUsername());
+		session.setAttribute("user_id", user.getUserId());
+		session.setAttribute("user_name", user.getUserName());
 		
 		response.sendRedirect("main.jsp");
 	}

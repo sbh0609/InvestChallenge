@@ -10,13 +10,14 @@ public class LoginDAO {
 		ConnectDB db = new ConnectDB();
 		db.connect();
 		Connection conn = db.getConn();
-		String sql = "insert into user values (?, ?, ?)";
+		String sql = "insert into User values (?, ?, ?, ?)";
 		int result = 0;
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, user.getId());
-			pstmt.setString(2, user.getPw());
-			pstmt.setString(3, user.getUsername());
+			pstmt.setString(1, user.getUserId());
+			pstmt.setString(2, user.getUserName());
+			pstmt.setString(3, user.getUserPassword());
+			pstmt.setInt(4, user.getTotalAmount());
 			result = pstmt.executeUpdate();
 		}
 		catch (SQLException e) {
@@ -33,7 +34,7 @@ public class LoginDAO {
 		db.connect();
 		Connection conn = db.getConn();
 		userVO user = null;
-		String sql = "select * from user where id = ? and pw = ?";
+		String sql = "select * from User where user_id = ? and user_password = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1,  id);
@@ -42,9 +43,9 @@ public class LoginDAO {
 			
 			if (rs.next()) {
 				user = new userVO();
-				user.setId(rs.getString("id"));
-				user.setPw(rs.getString("pw"));
-				user.setUsername(rs.getString("username"));
+				user.setUserId(rs.getString("user_id"));
+				user.setUserPassword(rs.getString("user_password"));
+				user.setUserName(rs.getString("user_name"));
 			}
 		}
 		catch (SQLException e) {
