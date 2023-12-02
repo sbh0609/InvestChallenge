@@ -26,7 +26,6 @@
 	<jsp:useBean id="gsc" class="DAO.GetstockCode"/>
 	<jsp:useBean id="apiData" class="service.GetapiData"/>
 	<jsp:useBean id="gsd" class="service.GetstockData"/>
-	<jsp:useBean id="sbp" class="service.SellBuyPrice"/>
 	<%
 		request.setCharacterEncoding("UTF-8");
 		String searchWord = request.getParameter("searchWord");
@@ -129,11 +128,12 @@
         } %>
         chart.update();
     </script>
+    <%-- 실시간 현재가 --%>
     <script>
     // 주식 현재가를 업데이트하는 함수
     function updateCurrentPrice() {
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'getCurrentPrice.jsp?searchWord=' + '<%= searchWord %>', true);
+        xhr.open('GET', 'getCurrentPrice.jsp?searchWord=' + encodeURIComponent('<%= searchWord %>'), true);
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 // 두 현재가 업데이트 요소를 업데이트
@@ -150,10 +150,11 @@
         setInterval(updateCurrentPrice, 10000);
     };
 	</script>
+	<%--실시간 총 가격 설정  --%>
     <script>
     document.getElementById('quantity').addEventListener('input', function() {
         var quantity = this.value;
-        var searchWord = '<%= searchWord %>'; // JSP에서 검색어 가져오기
+        var searchWord = encodeURIComponent('<%= searchWord %>'); // JSP에서 검색어 가져오기
 
         // AJAX 요청 생성 및 보내기
         var xhr = new XMLHttpRequest();
@@ -169,6 +170,46 @@
         xhr.send();
     });
 	</script>
+
+
+	<script>
+    document.getElementById('buyButton').addEventListener('click', function() {
+        var quantity = document.getElementById('quantity').value;
+        var totalPrice = document.getElementById('totalPrice').textContent.trim();
+        var searchWord = encodeURIComponent('<%= searchWord %>');
+        var userId = '<%= session.getAttribute("user_id") %>'; // 세션에서 userId 가져오기
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'buyStock.jsp', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                // 처리 결과에 따른 클라이언트 측 로직
+                console.log('매수 처리 완료: ', this.responseText);
+            }
+        };
+        xhr.send('quantity=' + quantity + '&totalPrice=' + totalPrice + '&searchWord=' + searchWord + '&userId=' + userId);
+    });
+	</script>
+	<script>
+    document.getElementById('sellButton').addEventListener('click', function() {
+        var quantity = parseInt(document.getElementById('quantity').value);
+        var totalPrice = parseInt(document.getElementById('totalPrice').textContent.trim());
+        var searchWord = encodeURIComponent('<%= searchWord %>');
+        var userId = '<%= session.getAttribute("user_id") %>';
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'sellStock.jsp', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(this.responseText);
+            }
+        };
+        xhr.send('quantity=' + quantity + '&totalPrice=' + totalPrice + '&searchWord=' + searchWord + '&userId=' + userId);
+    });
+	</script>
+
 </body>
 
 </html>

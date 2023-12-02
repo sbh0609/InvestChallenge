@@ -7,6 +7,7 @@
     
     //SellBuyPrice sbp = new SellBuyPrice();
     //Integer price = sbp.sbPrice(searchWord, quantity);
+    request.setCharacterEncoding("UTF-8");
     String searchWord = request.getParameter("searchWord");
     String quantityStr = request.getParameter("quantity");
     Integer price = 0;

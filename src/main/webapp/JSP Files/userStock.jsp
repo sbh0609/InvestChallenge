@@ -109,13 +109,16 @@
 		connectKIS.issueToken();
 		
         for (UserStock userStock : userStockList) {
+
         	List<Integer> stockInfo = gu.getStockInfo(userStock);
         	
         	int intRealPrice = stockInfo.get(0);
         	int profitLossValuation = stockInfo.get(1);
         	int rateOfReturn = stockInfo.get(2);
         	int marketValue = stockInfo.get(3);
-        	
+
+
+     
     %>
     		<div class="grid grid-rows-2 grid-cols-4 gap-4 mb-4 p-4 border-2">
 	    		<div class="font-bold flex justify-center items-center row-span-2"><%= userStock.getStockName() %></div>
