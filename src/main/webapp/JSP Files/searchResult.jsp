@@ -2,16 +2,27 @@
 <%@ page import="org.json.JSONObject" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%
+	String id = (String)session.getAttribute("user_id");
+	String name = (String)session.getAttribute("user_name");
+%>
 <!DOCTYPE html>
 <html>
+
 <head>
-	<meta charset="UTF-8">
-	<title>Insert title here</title>
-	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invest Challenge</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      body {
+      font-family: 'Inter', sans-serif;
+    }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
-
-<body>
-
+<body class="bg-white text-gray-800">
 	<jsp:useBean id="gsc" class="DAO.GetstockCode"/>
 	<jsp:useBean id="apiData" class="service.GetapiData"/>
 	<jsp:useBean id="gsd" class="service.GetstockData"/>
@@ -19,33 +30,79 @@
 	<%
 		request.setCharacterEncoding("UTF-8");
 		String searchWord = request.getParameter("searchWord");
+		String currentprice = gsd.OnlyPrice(searchWord);
+		String [][] dailychart= gsd.StockDailyInfo(searchWord);
 	%>
-	<h2>Search Results for "<%= searchWord %>"</h2>
 	
-	<%
-	String currentprice = gsd.OnlyPrice(searchWord);
-	String [][] dailychart= gsd.StockDailyInfo(searchWord);
-	%>
+    <div class="container mx-auto p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-6">
+            <a href="http://localhost:8080/investChallenge/JSP%20Files/main.jsp">
+            	<h1 class="text-3xl font-bold">Invest Challenge</h1>
+            </a>
+            <div class="flex space-x-4">
+            	<form method="post" action="searchResult.jsp">
+					<div class="search">
+						<input class="px-4 py-2 border rounded" type="text" class="form-control puu-right" placeholder="주식을 검색하세요." name="searchWord" />
+					</div>
+				</form>
+                <%	if (id != null) {
+					%>
+					<div class="px-4 py-2 rounded"><%=id %>(<%=name %>)님 환영합니다.</div>
+					<input class="px-4 py-2 bg-blue-400 text-white rounded hover:bg-blue-300" type="button" value="로그아웃" onclick="location.href='logoutProcess.jsp'">
+				<%}
+					else {
+					%>
+					<input class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600" type="button" value="로그인" onclick="location.href='login.jsp'">
+				<%}
+				%>
+            </div>
+        </div>
 
-	<div id="initialCurrentPrice">현재가:<%= currentprice %></div>
-	<!-- Daily Chart Data Display -->
-	<!-- 차트를 표시할 canvas 요소 추가 -->
-    <canvas id="stockChart" width="400" height="200"></canvas>
-	 <!-- Chart.js를 사용하여 차트 그리기 -->
-    
-	
-	<!-- 실시간 현재가 표시 -->
-    <div id="currentPrice">현재가:<%= currentprice %> </div>
+        <!-- Main Content -->
+        <div class="flex flex-wrap -mx-2">
+            <!-- Chart Section -->
+            <div class="w-full lg:w-2/3 px-2 mb-4">
+                <div class="border p-4">
+                    <h2 class="font-semibold mb-2"><%= searchWord %></h2>
+                    <!-- Placeholder for Chart -->
+                    <canvas id="stockChart" width="400" height="200"></canvas>
+                </div>
+            </div>
 
-    <!-- 수량 입력 필드 -->
-    <label for="quantity">수량:</label>
-    <input type="number" id="quantity" name="quantity"><br>
-    <!-- 매수/매도 가격 표시 -->
-    <div id="totalPrice">총 가격:  </div>
-    <!-- 매수/매도 버튼 -->
-    <button id="buyButton">매수</button>
-    <button id="sellButton">매도</button>
-    
+            <!-- Form Section -->
+            <div class="w-full lg:w-1/3 px-2 mb-4">
+                <div class="border p-4">
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="price">
+                            가격
+                        </label>
+                        <div id="initialCurrentPrice"><%= currentprice %></div>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="quantity">
+                            수량
+                        </label>
+                        <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" type="number" id="quantity" name="quantity" placeholder="주">
+                    </div>
+                    <div class="mb-6">
+                        <label class="block text-gray-700 text-sm font-bold mb-2" for="quantity">
+                            주문금액
+                        </label>
+                        <div id="totalPrice"></div>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" id="buyButton">
+                            매수
+                        </button>
+                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="button" id="sellButton">
+                            매도
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <script>
         var ctx = document.getElementById('stockChart').getContext('2d');
         var chart = new Chart(ctx, {
@@ -71,7 +128,6 @@
             }
         } %>
         chart.update();
-    
     </script>
     <script>
     // 주식 현재가를 업데이트하는 함수
@@ -107,13 +163,12 @@
                 // 응답 받기
                 var price = this.responseText;
                 // 결과를 표시하는 부분 업데이트
-                document.getElementById('totalPrice').innerHTML = '총 가격: ' + price;
+                document.getElementById('totalPrice').innerHTML = price;
             }
         };
         xhr.send();
     });
 	</script>
-
-    
 </body>
+
 </html>
