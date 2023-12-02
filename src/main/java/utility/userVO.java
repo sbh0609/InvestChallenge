@@ -1,31 +1,40 @@
 package utility;
 
 public class userVO {
-	private String id;
-	private String pw;
-	private String username;
+	private String userId;
+	private String userPassword;
+	private String userName;
+	private int totalAmount;
 	
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
-	public String getPw() {
-		return pw;
+	public String getUserPassword() {
+		return userPassword;
 	}
 	
-	public void setPw(String pw) {
-		this.pw = pw;
+	public void setUserPassword(String userPassword) {
+		this.userPassword = userPassword;
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getUserName() {
+		return userName;
 	}
 	
-	public void setUsername(String username) {
-		this.username = username;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+	
+	public int getTotalAmount() {
+		return totalAmount;
+	}
+	
+	public void setTotalAmount(int totalAmount) {
+		this.totalAmount = totalAmount;
 	}
 }

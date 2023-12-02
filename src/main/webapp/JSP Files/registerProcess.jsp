@@ -8,9 +8,10 @@
 <%	String id = request.getParameter("id");
 	String pw = request.getParameter("pw");
 	String username = request.getParameter("username");
-	user.setId(id);
-	user.setPw(pw);
-	user.setUsername(username);
+	user.setUserId(id);
+	user.setUserPassword(pw);
+	user.setUserName(username);
+	user.setTotalAmount(0);
 	int result = dao.add(user);
 	if (result == 1) {
 		response.sendRedirect("login.jsp");
