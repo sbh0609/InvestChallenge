@@ -113,7 +113,7 @@
         	
         	int intRealPrice = stockInfo.get(0);
         	int profitLossValuation = stockInfo.get(1);
-        	double rateOfReturn = stockInfo.get(2);
+        	int rateOfReturn = stockInfo.get(2);
         	int marketValue = stockInfo.get(3);
         	
     %>
