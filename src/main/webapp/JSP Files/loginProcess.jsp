@@ -34,7 +34,7 @@
 	}
 	else if (user != null) {
 		session.setAttribute("user_id", user.getUserId());
-		session.setAttribute("user_name", user.getUsername());
+		session.setAttribute("user_name", user.getUserName());
 		
 		response.sendRedirect("main.jsp");
 	} 
