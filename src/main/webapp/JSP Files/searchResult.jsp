@@ -170,18 +170,17 @@
         xhr.send();
     });
 	</script>
-<<<<<<< Updated upstream
-=======
+
 
 	<script>
     document.getElementById('buyButton').addEventListener('click', function() {
         var quantity = document.getElementById('quantity').value;
-        var totalPrice = document.getElementById('totalPrice').textContent.split(':')[1].trim();
+        var totalPrice = document.getElementById('totalPrice').textContent.trim();
         var searchWord = encodeURIComponent('<%= searchWord %>');
         var userId = '<%= session.getAttribute("user_id") %>'; // 세션에서 userId 가져오기
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'processData.jsp', true);
+        xhr.open('POST', 'buyStock.jsp', true);
         xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -192,9 +191,25 @@
         xhr.send('quantity=' + quantity + '&totalPrice=' + totalPrice + '&searchWord=' + searchWord + '&userId=' + userId);
     });
 	</script>
-	
-    
->>>>>>> Stashed changes
+	<script>
+    document.getElementById('sellButton').addEventListener('click', function() {
+        var quantity = parseInt(document.getElementById('quantity').value);
+        var totalPrice = parseInt(document.getElementById('totalPrice').textContent.trim());
+        var searchWord = encodeURIComponent('<%= searchWord %>');
+        var userId = '<%= session.getAttribute("user_id") %>';
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'sellStock.jsp', true);
+        xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                alert(this.responseText);
+            }
+        };
+        xhr.send('quantity=' + quantity + '&totalPrice=' + totalPrice + '&searchWord=' + searchWord + '&userId=' + userId);
+    });
+	</script>
+
 </body>
 
 </html>

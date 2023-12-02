@@ -7,10 +7,4 @@ public class SellBuyPrice {
 		Integer sbprice = currentprice*num;
 		return sbprice;
 	}
-
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//
-//	}
-
 }

@@ -11,10 +11,10 @@
 
     SetHoldingData shd = new SetHoldingData();
     try {
-        shd.setHoldingRow(quantity, totalPrice, searchWord, userId);
-        out.print("매수 처리 성공");
+    	String resultMessage = shd.ClickSell(quantity, totalPrice, searchWord, userId);
+    	out.print(resultMessage);
     } catch (Exception e) {
         e.printStackTrace();
-        out.print("매수 처리 실패: " + e.getMessage());
+        out.print("매도 처리 실패: " + e.getMessage());
     }
 %>

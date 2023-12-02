@@ -109,28 +109,16 @@
 		connectKIS.issueToken();
 		
         for (UserStock userStock : userStockList) {
-<<<<<<< Updated upstream
+
         	List<Integer> stockInfo = gu.getStockInfo(userStock);
         	
         	int intRealPrice = stockInfo.get(0);
         	int profitLossValuation = stockInfo.get(1);
         	int rateOfReturn = stockInfo.get(2);
         	int marketValue = stockInfo.get(3);
-=======
-        	// 주식이름은 코드로 변환해서 현재갑 가져오기
-        	String stockName = userStock.getStockName();
-        	String stockCode = gsc.getStockCode(stockName);
-        	String realPrice = gad.LiveStockPrice(stockCode);
-        	// 손익 등등 계산식들
-        	int intRealPrice = (realPrice != null) ? Integer.parseInt(realPrice) : 0;
-        	// 평가 손익 
-        	int profitLossValuation = (intRealPrice - userStock.getBuyPrice()) * userStock.getStockQuantity();
-        	//수익률
-        	double rateOfReturn = ((double) profitLossValuation / (userStock.getBuyPrice() * userStock.getStockQuantity())) * 100;
-        	//평가금액 
-        	int marketValue = intRealPrice * userStock.getStockQuantity();
->>>>>>> Stashed changes
-        	
+
+
+     
     %>
     		<div class="grid grid-rows-2 grid-cols-4 gap-4 mb-4 p-4 border-2">
 	    		<div class="font-bold flex justify-center items-center row-span-2"><%= userStock.getStockName() %></div>
