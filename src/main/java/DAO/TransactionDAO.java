@@ -1,7 +1,6 @@
 package DAO;
 
 import utility.ConnectDB;
-import utility.HoldingVO;
 
 import java.sql.*;
 import java.util.List;

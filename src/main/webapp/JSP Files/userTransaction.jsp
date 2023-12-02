@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>거래내역</title>
 </head>
 <body>
 <jsp:useBean id="tdao" class="DAO.TransactionDAO"/>
