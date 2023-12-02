@@ -20,8 +20,24 @@
 	
 <body>
 	<% 	
-		//임시로 유저아이디 설정
-		String userID = "umjunsik";
+		// 유저아이디 값 string으로 변환 및 사용준비
+		String userID = null;
+		Object user_idObject = session.getAttribute("user_id");
+	
+		if (user_idObject != null) {
+   		userID = user_idObject.toString();
+   		
+		} else {
+			
+			%>
+			<script>
+            	alert("로그인이 필요한 서비스입니다.");
+          	    window.location.href = 'login.jsp';
+       	 	</script>
+       		<%
+			
+		}
+		
 		//db연결
 		ConnectDB db = new ConnectDB();
 		db.connect();

@@ -16,15 +16,36 @@
 	String pw = request.getParameter("pw");
 	user = dao.login(id, pw);
 	
-	if (user != null) {
+	if (id.trim().isEmpty()) {
+		%>
+		<script>
+    		alert("아이디를 입력하세요.");
+  	   		window.location.href = 'login.jsp';
+	 	</script>
+		<% 
+	}
+	else if (pw.trim().isEmpty()) {
+		%>
+		<script>
+    		alert("비밀번호를 입력하세요.");
+  	   		window.location.href = 'login.jsp';
+	 	</script>
+		<% 
+	}
+	else if (user != null) {
 		session.setAttribute("user_id", user.getId());
 		session.setAttribute("user_name", user.getUsername());
 		
 		response.sendRedirect("main.jsp");
-	}
-	
+	} 
 	else {
-		response.sendRedirect("login.jsp");
+		// response.sendRedirect("login.jsp");를 밑처럼바꿔서 알람뜨게바꿈
+		%>
+		<script>
+    		alert("아이디 혹은 비밀번호가 일치하지 않습니다.");
+  	   		window.location.href = 'login.jsp';
+	 	</script>
+		<% 
 	}
 %>
 </body>

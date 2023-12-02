@@ -9,7 +9,13 @@
 <body>
 <%
     session.invalidate();
-    response.sendRedirect("main.jsp");
+	// response.sendRedirect("main.jsp"); 을 밑처럼 바꿔서 알람뜨게 바꿈 
+	%>
+	<script>
+		alert("로그아웃 되었습니다.");
+ 		window.location.href = 'main.jsp';
+	</script>
+	<% 
 %>
 </body>
 </html>
