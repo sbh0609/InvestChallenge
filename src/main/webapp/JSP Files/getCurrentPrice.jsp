@@ -2,6 +2,7 @@
 <%@ page contentType="text/plain;charset=UTF-8" %>
 <%
     // GetstockData Bean을 생성
+    request.setCharacterEncoding("UTF-8");
     GetstockData gsd = new GetstockData();
 
     // 요청으로부터 searchWord 파라미터를 받음

@@ -3,6 +3,7 @@ package DAO;
 public class UserStock {
 	private String userID;
     private String stockName;
+    // 매수 평균 
     private int buyPrice;
     private int stockQuantity;
 
@@ -11,6 +12,7 @@ public class UserStock {
         this.stockName = stockName;
         this.buyPrice = buyPrice;
         this.stockQuantity = stockQuantity;
+
     }
 
     public String getUserID() {
