@@ -71,6 +71,8 @@
         		</form>
         		
                 <button class="w-1/4 px-6 py-3 bg-blue-500 text-white rounded shadow hover:bg-blue-600">주식 거래</button>
+                <br>
+                <input class="w-1/4 px-6 py-3 bg-blue-500 text-white rounded shadow hover:bg-blue-600" type="button" value="거래내역" onclick="location.href='userTransaction.jsp'">
             </div>
         </div>
     </div>
