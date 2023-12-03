@@ -16,6 +16,7 @@ public class GetUserStock {
 	GetapiData gad = new GetapiData();
 	
 	public List<HoldingVO> getUserStock(String userID) {
+		System.out.println("야호");
 		List<HoldingVO> userStockList = new ArrayList<>();
 		ConnectDB db = new ConnectDB();
 		db.connect();
@@ -36,11 +37,7 @@ public class GetUserStock {
                         rs.getInt("total_price")
                 );
 				 userStockList.add(userStock);
-				 System.out.println("User ID: " + userStock.getHoldingId() +
-	                        ", Stock Name: " + userStock.getStockId() +
-	                        ", Buy Price: " + userStock.getAverageBuyPrice() +
-	                        ", Stock Quantity: " + userStock.getQuantity()+
-	                        ", Total Price:" + userStock.getTotalPrice());
+				
 			}
 			rs.close();
 			pstmt.close();
@@ -71,12 +68,6 @@ public class GetUserStock {
 	    	result.add(profitLossValuation);
 	    	result.add((int) rateOfReturn); 
 	    	result.add(marketValue);
-	    	System.out.println("현재가"+intRealPrice);
-	    	System.out.println("평가손익"+profitLossValuation);
-	    	System.out.println("수익"+(int) rateOfReturn);
-	    	System.out.println("시장"+marketValue);
-	    	System.out.println("quantity"+userStock.getQuantity());
-	    	System.out.println("매입가"+userStock.getAverageBuyPrice());
 	    	return result;
 	    	}
 }

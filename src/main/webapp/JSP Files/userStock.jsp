@@ -27,7 +27,7 @@
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body class="bg-white text-gray-800">
+<body class="bg-white text-gray-800" onload="updateStockInfo()">
 	<jsp:useBean id="apiData" class="service.GetapiData"/>
 	<jsp:useBean id="gsd" class="service.GetstockData"/>
 	<jsp:useBean id="sbp" class="service.SellBuyPrice"/>
@@ -64,76 +64,80 @@
     <div class="flex gap-4">
       <!-- Left Panel -->
       <div class="flex-1">
-        <div class="grid grid-rows-2 grid-cols-4 gap-4 mb-4 bg-gray-200 p-4">
-         <div class="font-bold flex justify-center items-center row-span-2">종목명</div>
-         <div class="font-bold text-center">평가손익</div>
-         <div class="font-bold text-center">잔고수량</div>
-         <div class="font-bold text-center">매입가</div>
-         <div class="font-bold text-center">수익률</div>
-         <div class="font-bold text-center">평가금액</div>
-         <div class="font-bold text-center">현재가</div>
-        </div>
-        <div class="space-y-2">
-	<% 	
-		// 유저아이디 값 string으로 변환 및 사용준비
-		String userID = null;
-		Object user_idObject = session.getAttribute("user_id");
-	
-		if (user_idObject != null) {
-   		userID = user_idObject.toString();
-   		
-		} else {
-			
-			%>
-			<script>
-            	alert("로그인이 필요한 서비스입니다.");
-          	    window.location.href = 'login.jsp';
-       	 	</script>
-       		<%
-			
-		}
-		
-		//db연결
-		ConnectDB db = new ConnectDB();
-		db.connect();
-		// db에서 유저의 주식 정보 가져와서 리스트에 입력
-		
-		GetUserStock gu = new GetUserStock();
-		gu.getUserStock(userID);
-		List<HoldingVO> userStockList = gu.getUserStock(userID);
-		
-		GetstockCode gsc = new GetstockCode();
-	
-		GetapiData gad = new GetapiData();
-		
-        for (HoldingVO userStock : userStockList) {
-
-        	List<Integer> stockInfo = gu.getStockInfo(userStock);
-        	
-        	int intRealPrice = stockInfo.get(0);
-        	int profitLossValuation = stockInfo.get(1);
-        	int rateOfReturn = stockInfo.get(2);
-        	int marketValue = stockInfo.get(3);
-
-
-     
-    %>
-    		<div class="grid grid-rows-2 grid-cols-4 gap-4 mb-4 p-4 border-2">
-	    		<div class="font-bold flex justify-center items-center row-span-2"><%= userStock.getStockId() %></div>
-		       	<div class="text-center"><%= profitLossValuation %></div>
-		        <div class="text-center"><%= userStock.getQuantity() %></div>
-		        <div class="text-center"><%= userStock.getAverageBuyPrice() %></div>
-		        <div class="text-center"><%= rateOfReturn %>%</div>
-		        <div class="text-center"><%= marketValue %></div>
-		        <div class="text-center"><%= intRealPrice %></div>
-            </div>
-    <%
-        }
-
-    %>
+        <div id="stockInfoContainer" class="space-y-2">
         </div>
       </div>
     </div>
   </div>
+  <script>
+    var userId = '<%= session.getAttribute("user_id") %>';
+    function styleTable(table) {
+        table.classList.add("text-lg"); // 예시로 Tailwind CSS 텍스트 크기 클래스 추가
+    }
+    function updateStockInfo() {
+        if (!userId) {
+            alert("로그인이 필요한 서비스입니다.");
+            window.location.href = 'login.jsp';
+            return;
+        }
+
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'updateStockInfo.jsp?userId=' + encodeURIComponent(userId), true);
+        xhr.onreadystatechange = function() {
+            if (this.readyState == 4) {
+                if (this.status == 200) {
+                    var stocks = JSON.parse(this.responseText);
+                    var container = document.getElementById("stockInfoContainer");
+                    container.innerHTML = ''; // 기존 내용을 클리어합니다.
+                    
+                    // 새로운 테이블 생성
+                    var table = document.createElement('table');
+                    styleTable(table);
+                    table.classList.add("min-w-full", "divide-y", "divide-gray-200"); // 예시로 Tailwind CSS 클래스 추가
+
+                    // 테이블 헤더 추가
+                    var thead = document.createElement('thead');
+                    var headerRow = document.createElement('tr');
+                    var headers = ['종목명', '평가손익', '잔고수량', '매입가', '수익률', '평가금액', '현재가'];
+                    headers.forEach(function(header) {
+                        var th = document.createElement('th');
+                        th.textContent = header;
+                        th.classList.add("px-6", "py-3", "text-left", "text-xs", "font-medium", "text-gray-500", "uppercase", "tracking-wider");
+                        headerRow.appendChild(th);
+                    });
+                    thead.appendChild(headerRow);
+                    table.appendChild(thead);
+
+                    // 테이블 본문 추가
+                    var tbody = document.createElement('tbody');
+                    stocks.forEach(function(stock) {
+                        var row = document.createElement('tr');
+                        
+                        // 원하는 순서로 데이터 추가
+                        var dataOrder = ['stockId', 'profitLossValuation', 'quantity', 'averageBuyPrice', 'rateOfReturn', 'marketValue', 'realPrice'];
+                        dataOrder.forEach(function(key) {
+                            var cell = document.createElement('td');
+                            cell.textContent = stock[key];
+                            cell.classList.add("px-6", "py-4", "whitespace-nowrap");
+                            row.appendChild(cell);
+                        });
+
+                        tbody.appendChild(row);
+                    });
+                    table.appendChild(tbody);
+
+                    container.appendChild(table); // 테이블을 컨테이너에 추가
+                } else if (this.readyState == 4) {
+                    console.log("Error: ", this.status); // 실패한 경우 상태 코드 출력
+                }
+            }
+        };
+        xhr.send();
+    }
+    window.onload = updateStockInfo;
+    setInterval(updateStockInfo, 5000);
+	</script>
+
 </body>
 </html>
