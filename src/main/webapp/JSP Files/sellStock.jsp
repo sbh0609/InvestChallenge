@@ -1,4 +1,5 @@
 <%@ page import="DAO.SetHoldingData" %>
+<%@ page import="DAO.TransactionDAO" %>
 <%@ page import="java.io.IOException" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
@@ -8,6 +9,9 @@
     int totalPrice = Integer.parseInt(request.getParameter("totalPrice"));
     String searchWord = request.getParameter("searchWord");
     String userId = request.getParameter("userId");
+    
+    TransactionDAO tdao = new TransactionDAO();
+    tdao.updateTransaction(userId, searchWord, "매도", quantity, totalPrice / quantity);
 
     SetHoldingData shd = new SetHoldingData();
     try {

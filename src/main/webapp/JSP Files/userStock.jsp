@@ -2,7 +2,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="utility.ConnectDB" %>
-<%@ page import="utility.ConnectKIS" %>
 <%@ page import="DAO.GetUserStock" %>
 <%@ page import="service.GetapiData" %>
 <%@ page import="DAO.GetstockCode" %>
@@ -81,6 +80,7 @@
             window.location.href = 'login.jsp';
             return;
         }
+
 
         var xhr = new XMLHttpRequest();
         xhr.open('GET', 'updateStockInfo.jsp?userId=' + encodeURIComponent(userId), true);

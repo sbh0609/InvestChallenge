@@ -78,7 +78,7 @@
             <div class="flex flex-col items-center justify-center">
                 <h2 class="text-3xl font-bold mb-6">Invest Challenge</h2>                
             	<button class="w-1/4 mb-4 px-6 py-3 bg-gray-200 rounded shadow hover:bg-gray-300" type="submit" onclick="location.href='userStock.jsp'">내 자산 확인하기</button>
-                <button class="w-1/4 px-6 py-3 bg-blue-500 text-white rounded shadow hover:bg-blue-600">주식 거래</button>
+                <input class="w-1/4 px-6 py-3 bg-blue-500 text-white rounded shadow hover:bg-blue-600" type="button" value="거래내역" onclick="location.href='userTransaction.jsp'">
             </div>
         </div>
     </div>
