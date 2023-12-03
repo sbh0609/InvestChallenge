@@ -1,4 +1,5 @@
 <%@ page import="DAO.SetHoldingData" %>
+<%@ page import="DAO.TransactionDAO" %>
 <%@ page import="java.io.IOException" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
@@ -17,4 +18,7 @@
         e.printStackTrace();
         out.print("매수 처리 실패: " + e.getMessage());
     }
+    
+    TransactionDAO tdao = new TransactionDAO();
+    tdao.updateTransaction(userId, searchWord, "매수", quantity, totalPrice / quantity);
 %>

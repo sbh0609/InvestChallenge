@@ -75,7 +75,7 @@ public class GetapiData {
          String[][] ChartData = null;
          try {
         	 String path = "uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
-        	 URL url = new URL(URL_BASE + "/" + path + "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + stock_code + "&fid_input_date_1=20231111&fid_input_date_2="+strToday+"&fid_org_adj_prc=0&fid_period_div_code=D");
+        	 URL url = new URL(URL_BASE + "/" + path + "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + stock_code + "&fid_input_date_1=20231101&fid_input_date_2="+strToday+"&fid_org_adj_prc=0&fid_period_div_code=D");
         	 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
              conn.setRequestMethod("GET");

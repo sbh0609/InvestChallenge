@@ -2,7 +2,6 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.sql.*" %>
 <%@ page import="utility.ConnectDB" %>
-<%@ page import="utility.ConnectKIS" %>
 <%@ page import="DAO.GetUserStock" %>
 <%@ page import="service.GetapiData" %>
 <%@ page import="DAO.GetstockCode" %>
@@ -106,9 +105,6 @@
 		GetstockCode gsc = new GetstockCode();
 	
 		GetapiData gad = new GetapiData();
-		
-		ConnectKIS connectKIS = new ConnectKIS();
-		connectKIS.issueToken();
 		
         for (HoldingVO userStock : userStockList) {
 
