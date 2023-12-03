@@ -1,12 +1,12 @@
 package utility;
 
 public class HoldingVO {
-	int holdingId;
-    String userId;
-    String stockId;
-    int quantity;
-    int averageBuyPrice;
-    int totalPrice;
+	private int holdingId;
+    private String userId;
+    private String stockId;
+    private int quantity;
+    private int averageBuyPrice;
+    private int totalPrice;
 
     public HoldingVO(int holdingId, String userId, String stockId, int quantity, int averageBuyPrice, int totalPrice) {
         this.holdingId = holdingId;
