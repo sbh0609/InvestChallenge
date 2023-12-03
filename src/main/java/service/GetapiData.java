@@ -21,8 +21,6 @@ public class GetapiData {
     private String apiSecret = System.getenv("KISSECRET_KEY");
     private static final String URL_BASE = "https://openapi.koreainvestment.com:9443";
     
-    //입력 창에서 받아온 데이터로 변경
-    private static final String STOCK_CODE = "000660";
      //주식 현재가를 조회하는 메소드
     public String LiveStockPrice(String stock_code) {
     	String token = new ConnectKIS().readTokenFromFile();
@@ -63,7 +61,6 @@ public class GetapiData {
             return "Error: Exception occurred";
         }
 //        return response.toString();
-        System.out.println(nowprice);
         return nowprice;
     }
     
@@ -74,7 +71,6 @@ public class GetapiData {
          SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd"); 
          Calendar c1 = Calendar.getInstance();
          String strToday = sdf.format(c1.getTime());
-         System.out.println(strToday);
          String[][] revchartData = null;
          String[][] ChartData = null;
          try {
@@ -98,12 +94,9 @@ public class GetapiData {
                      response.append(inputLine);
                  }
                  in.close();
-                 
-                 System.out.println(response.toString());
+               
                  JSONObject jsonResponse = new JSONObject(response.toString());
-                 System.out.println(jsonResponse);
                  JSONArray output2Array = jsonResponse.getJSONArray("output2");
-                 System.out.println(output2Array);
                  revchartData = new String[output2Array.length()][2];
                  
                  for (int i = 0; i < output2Array.length(); i++) {
@@ -115,19 +108,6 @@ public class GetapiData {
                  List<String[]> revchartDataList = Arrays.asList(revchartData);
                  Collections.reverse(revchartDataList);
                  ChartData = revchartDataList.toArray(new String[0][]);
-                //전체 데이터 2차원으로 저장 
-//                 for (int i = 0; i < output2Array.length(); i++) {
-//                     JSONObject dayData = output2Array.getJSONObject(i);
-//                     Iterator<String> keys = dayData.keys();
-//                     ArrayList<String> dayValues = new ArrayList<>();
-//
-//                     while(keys.hasNext()) {
-//                         String key = keys.next();
-//                         dayValues.add(dayData.getString(key));
-//                     }
-//
-//                     chartData[i] = dayValues.toArray(new String[0]);
-//                 }
              } else if (responseCode == 500) { // 토큰 만료 시 재발급
                  new ConnectKIS().issueToken();
              } else {

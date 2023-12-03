@@ -4,9 +4,9 @@
 <%@ page import="utility.ConnectDB" %>
 <%@ page import="utility.ConnectKIS" %>
 <%@ page import="DAO.GetUserStock" %>
-<%@ page import="DAO.UserStock" %>
 <%@ page import="service.GetapiData" %>
 <%@ page import="DAO.GetstockCode" %>
+<%@ page import="utility.HoldingVO" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8" language="java"%>
 <%
@@ -32,6 +32,7 @@
 	<jsp:useBean id="apiData" class="service.GetapiData"/>
 	<jsp:useBean id="gsd" class="service.GetstockData"/>
 	<jsp:useBean id="sbp" class="service.SellBuyPrice"/>
+	
 	<%
 		String searchWord = "";
 		String currentprice = gsd.OnlyPrice(searchWord);
@@ -68,7 +69,7 @@
          <div class="font-bold flex justify-center items-center row-span-2">종목명</div>
          <div class="font-bold text-center">평가손익</div>
          <div class="font-bold text-center">잔고수량</div>
-         <div class="font-bold text-center">구분</div>
+         <div class="font-bold text-center">매입가</div>
          <div class="font-bold text-center">수익률</div>
          <div class="font-bold text-center">평가금액</div>
          <div class="font-bold text-center">현재가</div>
@@ -97,9 +98,10 @@
 		ConnectDB db = new ConnectDB();
 		db.connect();
 		// db에서 유저의 주식 정보 가져와서 리스트에 입력
+		
 		GetUserStock gu = new GetUserStock();
 		gu.getUserStock(userID);
-		List<UserStock> userStockList = gu.getUserStock(userID);
+		List<HoldingVO> userStockList = gu.getUserStock(userID);
 		
 		GetstockCode gsc = new GetstockCode();
 	
@@ -108,7 +110,7 @@
 		ConnectKIS connectKIS = new ConnectKIS();
 		connectKIS.issueToken();
 		
-        for (UserStock userStock : userStockList) {
+        for (HoldingVO userStock : userStockList) {
 
         	List<Integer> stockInfo = gu.getStockInfo(userStock);
         	
@@ -121,10 +123,10 @@
      
     %>
     		<div class="grid grid-rows-2 grid-cols-4 gap-4 mb-4 p-4 border-2">
-	    		<div class="font-bold flex justify-center items-center row-span-2"><%= userStock.getStockName() %></div>
+	    		<div class="font-bold flex justify-center items-center row-span-2"><%= userStock.getStockId() %></div>
 		       	<div class="text-center"><%= profitLossValuation %></div>
-		        <div class="text-center"><%= userStock.getStockQuantity() %></div>
-		        <div class="text-center"><%= userStock.getBuyPrice() %></div>
+		        <div class="text-center"><%= userStock.getQuantity() %></div>
+		        <div class="text-center"><%= userStock.getAverageBuyPrice() %></div>
 		        <div class="text-center"><%= rateOfReturn %>%</div>
 		        <div class="text-center"><%= marketValue %></div>
 		        <div class="text-center"><%= intRealPrice %></div>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="utility.ConnectDB" %>
+<%@ page import="org.json.JSONObject" %>
 <%
 	String id = (String)session.getAttribute("user_id");
 	String name = (String)session.getAttribute("user_name");
@@ -13,6 +14,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Invest Challenge</title>
 	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 	<style>
 	    body {
 	        font-family: 'Inter', sans-serif;
@@ -22,10 +24,14 @@
 </head>
 <body class="bg-white text-gray-800">
 <jsp:useBean id="connectKIS" class="utility.ConnectKIS"/>
+<jsp:useBean id="gsd" class="service.GetstockData"/>
+
 <%
     if (connectKIS.readTokenFromFile() == null) {
         connectKIS.issueToken();
     }
+	String [][] KPdailychart = gsd.StockDailyInfo("삼성전자");
+	String [][] KDdailychart = gsd.StockDailyInfo("에코프로비엠");
 %>
     <div class="container mx-auto p-4">
         <!-- Header -->
@@ -56,10 +62,16 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <!-- Chart Section -->
             <div>
-                <h2 class="text-xl font-semibold mb-2">KOSPI</h2>
+                <h2 class="text-xl font-semibold mb-2">KOSPI (삼성전자)</h2>
+                <%-- 
                 <img src="https://via.placeholder.com/900x300?text=KOSPI+Chart" alt="KOSPI Chart" class="mb-4">
-                <h2 class="text-xl font-semibold mb-2">KOSDAQ</h2>
+                 --%>
+                <canvas id="KP" width="900" height="300"></canvas>
+                <h2 class="text-xl font-semibold mb-2">KOSDAQ (에코프로비엠)</h2>
+                <%-- 
                 <img src="https://via.placeholder.com/900x300?text=KOSDAQ+Chart" alt="KOSDAQ Chart">
+                --%>
+                <canvas id="KD" width="900" height="300"></canvas>
             </div>
 
             <!-- Action Section -->
@@ -70,6 +82,58 @@
             </div>
         </div>
     </div>
+    <script>
+        var ctx = document.getElementById('KP').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Stock Price',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: []
+                }]
+            },
+            options: {}
+        });
+
+        <% if (KPdailychart != null) {
+            for (int i = 0; i < KPdailychart.length; i++) {
+            %>
+            chart.data.labels.push('<%= KPdailychart[i][0] %>'); // 날짜 추가
+            chart.data.datasets[0].data.push(<%= KPdailychart[i][1] %>); // 종가 추가
+            <%
+            }
+        } %>
+        chart.update();
+    </script>
+    <script>
+        var ctx = document.getElementById('KD').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Stock Price',
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: []
+                }]
+            },
+            options: {}
+        });
+
+        <% if (KDdailychart != null) {
+            for (int i = 0; i < KDdailychart.length; i++) {
+            %>
+            chart.data.labels.push('<%= KDdailychart[i][0] %>'); // 날짜 추가
+            chart.data.datasets[0].data.push(<%= KDdailychart[i][1] %>); // 종가 추가
+            <%
+            }
+        } %>
+        chart.update();
+    </script>
 </body>
 
 </html>

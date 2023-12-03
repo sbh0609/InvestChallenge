@@ -185,7 +185,7 @@
         xhr.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
                 // 처리 결과에 따른 클라이언트 측 로직
-                console.log('매수 처리 완료: ', this.responseText);
+                alert(this.responseText);
             }
         };
         xhr.send('quantity=' + quantity + '&totalPrice=' + totalPrice + '&searchWord=' + searchWord + '&userId=' + userId);

@@ -11,7 +11,7 @@
 
     SetHoldingData shd = new SetHoldingData();
     try {
-    	String resultMessage=shd.ClickBuy(quantity, totalPrice, searchWord, userId);
+    	String resultMessage = shd.ClickBuy(quantity, totalPrice, searchWord, userId);
         out.print(resultMessage);
     } catch (Exception e) {
         e.printStackTrace();
