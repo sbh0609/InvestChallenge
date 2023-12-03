@@ -6,22 +6,41 @@ import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
 import utility.TransactionVO;
+import utility.HoldingVO;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 
 public class TransactionDAO {
 	
-	public void updateTransaction(TransactionVO transaction) {
+	public void updateTransaction(String userId, String stockId, String transactionType, int quantity, int transactionPrice) {
+		
+		if (transactionType.equals("매도")) {
+			GetHoldingData ghd = new GetHoldingData();
+		    HoldingVO holding = ghd.getHoldingRow(userId, stockId);
+		    if (holding == null) {
+		    	return;
+		    }
+		    if (holding.getQuantity() < quantity) {
+		    	quantity = holding.getQuantity();
+		    }
+		}
+		
+		Date date = new Date();
+	    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	    String stringDate = format.format(date);
+	    
 		ConnectDB db = new ConnectDB();
 		db.connect();
 		Connection conn = db.getConn();
 		String sql = "insert into Transaction(user_id, stock_id, transaction_type, quantity, transaction_price, transaction_date) values(?, ?, ?, ?, ?, ?);";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, transaction.getUserId());
-			pstmt.setString(2,  transaction.getStockId());
-			pstmt.setString(3, transaction.getTransactionType());
-			pstmt.setInt(4, transaction.getQuantity());
-			pstmt.setInt(5, transaction.getTransactionPrice());
-			pstmt.setString(6, transaction.getTransactionDate());
+			pstmt.setString(1, userId);
+			pstmt.setString(2,  stockId);
+			pstmt.setString(3, transactionType);
+			pstmt.setInt(4, quantity);
+			pstmt.setInt(5, transactionPrice);
+			pstmt.setString(6, stringDate);
 			pstmt.executeUpdate();
 		}
 		catch (SQLException e) {
